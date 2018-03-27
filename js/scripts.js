@@ -41,7 +41,7 @@ playerOne.prototype.Tally = function() {
     $("#current-score01").text(this.score1);
     $("#total-score01").text(this.total1);
   } else {
-    $("#current-roll01".text(this.roll1);
+    $("#current-roll01").text(this.roll1);
     $("#total-score01").text((this.total1 + this.roll) + " You Win!")
   }
   this.score1 = 0;
