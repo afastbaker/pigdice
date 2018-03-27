@@ -1,4 +1,5 @@
 // business logic
+// See rogueminx/pig-dice for an example
 
 function playerOne (){
   this.roll1 = 0;
@@ -49,7 +50,76 @@ playerOne.prototype.Tally = function() {
   this.turn = "no";
 };
 
+function playerTwo () {
+  this.roll2 = 0;
+  this.score2 = 0;
+  this.total2 = 0;
+  this.turn = "no";
+}
+
+playerTwo.prototype.Random = function() {
+  if (this.turn === "no"){
+    console.log("It's not your turn!");
+  } else {
+    min = 1;
+    max = 6;
+    this.roll2 = Math.floor(Math.random() * (max - min + 1)) + min;
+    if (this.roll2 === 1) {
+      this.score2 = 0;
+      newPlayerOne.turn = "yes";
+      this.turn = "no";
+      $("#current-roll02").text(this.roll2);
+      $("#current-score02").text(this.score2)
+    } else {
+      $("#current-roll02").text(this.roll2);
+      this.score2 += this.roll2;
+      if ((this.score2 + this.total2) < 100) {
+        $("#current-roll02").text(this.roll2);
+        $("#current-score02").text(this.score2)
+      } else {
+        $("#current-roll02").text(this.roll2);
+        $("#total-score02").text(this.total2 + this.score2 + " You Win!");
+      };
+    };
+  };
+};
+
+playerTwo.prototype.Tally = function() {
+  if ((this.score2 + this.total2) < 100) {
+    this.total2 += this.score2;
+    $("#current-score02").text(this.score2);
+    $("#total-score02").text(this.total2)
+  } else {
+    $("#current-roll02").text(this.roll2);
+    $("#total-score02").text((this.total2 + this.roll2) + " You Win!")
+  }
+  this.score2 = 0;
+  this.roll2 = 0;
+  newPlayerOne.turn = "yes";
+  this.turn = "no";
+};
 
 
 
 // User interface
+
+$(document).ready(function(){
+  newPlayerOne = new playerOne();
+  newPlayerTwo = new playerTwo();
+  $("#roll01").click(function(event){
+    event.preventDefault();
+    newPlayerOne.Random();
+  });
+  $("#hold01").click(function(event){
+    event.preventDefault();
+    newPlayerOne.Tally();
+  });
+  $("#roll02").click(function(event){
+    event.preventDefault();
+    newPlayerTwo.Random();
+  });
+  $("#hold02").click(function(event){
+    event.preventDefault();
+    newPlayerTwo.Tally();
+  });
+});
